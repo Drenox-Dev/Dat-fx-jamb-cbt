@@ -1,4 +1,36 @@
 // const hideBtn = document.getElementById('subject-select');
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function shuffleBySubject(questions) {
+    const subjects = {};
+
+    // Group questions by subject
+    questions.forEach(q => {
+        if (!subjects[q.section]) {
+            subjects[q.section] = [];
+        }
+        subjects[q.section].push(q);
+    });
+
+    // Shuffle each subject separately
+    Object.keys(subjects).forEach(section => {
+        shuffleArray(subjects[section]);
+    });
+
+    // Merge back (keeping subject blocks)
+    let shuffled = [];
+    Object.keys(subjects).forEach(section => {
+        shuffled = shuffled.concat(subjects[section]);
+    });
+
+    return shuffled;
+}
 // All 140 questions data
 const subjectSelect = document.querySelector('.subject-select');
         const questions = [
@@ -440,7 +472,7 @@ const subjectSelect = document.querySelector('.subject-select');
 
    function startExam() {
     document.querySelector('.subject-select').style.display = 'none';
-    
+
     // FILTER QUESTIONS FIRST
     const filtered = questions.filter(q => {
         return selectedSubjects.some(sub =>
@@ -454,7 +486,10 @@ const subjectSelect = document.querySelector('.subject-select');
 
     // Reset answers array
     userAnswers = new Array(questions.length).fill(null);
+        const shuffledQuestions = shuffleBySubject(filtered);
 
+questions.length = 0;
+shuffledQuestions.forEach(q => questions.push(q));
     document.getElementById('startScreen').classList.add('hidden');
     document.getElementById('header').classList.add('active');
     document.getElementById('questionGrid').classList.add('active');
@@ -557,50 +592,27 @@ const subjectSelect = document.querySelector('.subject-select');
             document.getElementById('progressFill').style.width = `${progress}%`;
         }
 
-        function submitExam() {
-            if (examSubmitted) return;
-            
-            const unanswered = userAnswers.filter(a => a === null).length;
-            if (unanswered > 0) {
-                if (!confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) {
-                    return;
-                }
-            }
-            
-            examSubmitted = true;
-            clearInterval(timerInterval);
-            
-            let correct = 0;
-            let wrong = 0;
-            let unansweredCount = 0;
-            
-            userAnswers.forEach((answer, index) => {
-                if (answer === null) {
-                    unansweredCount++;
-                } else if (answer === questions[index].correct) {
-                    correct++;
-                } else {
-                    wrong++;
-                }
-            });
-            
-            const percentage = Math.round((correct / questions.length) * 100);
-            
-            document.getElementById('header').style.display = 'none';
-            document.getElementById('questionContainer').style.display = 'none';
-            document.getElementById('questionGrid').style.display = 'none';
-            document.getElementById('resultsScreen').classList.add('active');
-            
-            const scoreCircle = document.getElementById('scoreCircle');
-            scoreCircle.style.setProperty('--score-deg', `${percentage * 3.6}deg`);
-            document.getElementById('scorePercentage').textContent = `${percentage}%`;
-            
-            document.getElementById('correctCount').textContent = correct;
-            document.getElementById('wrongCount').textContent = wrong;
-            document.getElementById('unansweredCount').textContent = unansweredCount;
-            
-            generateReview();
-        }
+       function submitExam() {
+    if (examSubmitted) return;
+
+    const unanswered = userAnswers.filter(a => a === null).length;
+
+    const modal = document.getElementById("submitModal");
+    const text = document.getElementById("submitText");
+
+    text.textContent = `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`;
+
+    modal.classList.remove("hidden");
+
+    document.getElementById("cancelBtn").onclick = () => {
+        modal.classList.add("hidden");
+    };
+
+    document.getElementById("confirmBtn").onclick = () => {
+        modal.classList.add("hidden");
+        finishExam(); // we move real logic here
+    };
+}
 
         function generateReview() {
             const reviewList = document.getElementById('reviewList');
