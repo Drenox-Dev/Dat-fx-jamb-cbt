@@ -434,9 +434,11 @@ const subjectSelect = document.querySelector('.subject-select');
                 card.className = 'question-card';
                 card.id = `question-${index}`;
                 
-                const sectionHeader = index === 0 || q.section !== questions[index-1].section 
-                    ? `<div style="background: #667eea; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-weight: bold;">${q.section}</div>` 
-                    : '';
+ const sectionHeader = `
+    <div style="background: #667eea; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-weight: bold;">
+        ${q.section}
+    </div>
+`;
                 
                 card.innerHTML = `
                     ${sectionHeader}
