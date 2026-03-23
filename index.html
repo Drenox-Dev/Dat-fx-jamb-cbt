@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <link rel="stylesheet" href="style.css">
+<link rel="icon" href="icon.png">
+    <title>JAMB CBT STUDY QUESTIONS CREATED BY MARVIN FX</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header" id="header">
+            <h1 class="jamb-color">JAMB STUDY QUESTIONS BY MARVIN FX
+              
+            </h1>
+            <div class="timer" id="timer">Time Remaining: 02:00:00</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="stats">
+                <div class="stat-box">Question: <span id="currentQ">1</span>/140</div>
+                <button type="button" class="stat-box" id="calculatorBtn">Calculator</button>
+                <!-- <button type="button" class="stat-box">Calculator </button> -->
+                <div class="stat-box">Answered: <span id="answeredCount">0</span></div>
+                <div class="stat-box">Remaining: <span id="remainingCount">140</span></div>
+            </div>
+        </div>
+        <!-- <div id="questionContainer" style="display: none;"></div> -->
+<div class="subject-select">
+    <h3>Select Subjects (Pick all 4):</h3>
+
+    <div class="subjects">
+        <div class="subject-box" data-subject="English">English</div>
+        <div class="subject-box" data-subject="Mathematics">Mathematics</div>
+        <div class="subject-box" data-subject="Biology">Biology</div>
+        <div class="subject-box" data-subject="Chemistry">Chemistry</div>
+    </div>
+</div>
+        <div class="calculator-modal" id="calculatorModal">
+    <div class="calculator">
+
+        <div class="calc-header">
+            <span>Calculator</span>
+            <button id="closeCalc">✖</button>
+        </div>
+
+        <input type="text" id="calcDisplay" class="calc-display" disabled>
+
+        <div class="calc-buttons">
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('/')">÷</button>
+
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('*')">×</button>
+
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('-')">−</button>
+
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button class="calc-equal" onclick="calculate()">=</button>
+            <button onclick="press('+')">+</button>
+
+            <button class="calc-clear" onclick="clearCalc()">Clear</button>
+        </div>
+
+    </div>
+</div>
+        <div class="start-screen" id="startScreen">
+            <h2>🎓JAMB CBT STUDY QUESTIONS BY MARVIN</h2>
+              <div class="marvin-img-div">
+                    <img class="marvin-img" src="./icon.png" alt="photo">
+                </div>
+            <div class="instructions">
+                <h3>Instructions:</h3>
+                <ul>
+                    <li><strong>Duration:</strong> 2 hours</li>
+                    <li><strong>Total Questions:</strong> 180 questions(TOTAL)</li>
+                    <li><strong>Subjects:</strong> English, Mathematics, Biology, Chemistry</li>
+                    <li>Select the best answer for each question</li>
+                    <li>Navigate using Previous/Next buttons or question grid</li>
+                    <li>Answers saved automatically</li>
+                   
+                    <li>Click "Submit Exam" when finished</li>
+                </ul>
+            </div>
+       <button class="btn" id="startBtn" disabled>Start Examination</button>
+             <div>copright reserved 2026 @marvin 07083883423</div>
+        </div>
+
+        <div id="questionContainer"></div>
+
+        <div class="results-screen" id="resultsScreen">
+            <h2>🎉 UTME EXAMS COMPLETED</h2>
+            <div class="score-circle" id="scoreCircle">
+                <div class="score-inner">
+                    <div class="score-percentage" id="scorePercentage">0%</div>
+                    <div class="score-text">Score</div>
+                </div>
+            </div>
+            
+            <div class="result-details">
+                <div class="detail-box correct">
+                    <span class="detail-number" id="correctCount">0</span>
+                    <div>Correct</div>
+                </div>
+                <div class="detail-box wrong">
+                    <span class="detail-number" id="wrongCount">0</span>
+                    <div>Wrong</div>
+                </div>
+                <div class="detail-box unanswered">
+                    <span class="detail-number" id="unansweredCount">0</span>
+                    <div>Unanswered</div>
+                </div>
+            </div>
+
+            <div class="review-section" id="reviewSection">
+                <h3>Question Review</h3>
+                <div id="reviewList"></div>
+            </div>
+
+            <button class="btn" onclick="location.reload()">Retake Exam</button>
+        </div>
+
+        <div class="question-grid" id="questionGrid"></div>
+    </div>
+
+
+    <script src="app.js">
+            </script>
+    
+</body>
+</html>
