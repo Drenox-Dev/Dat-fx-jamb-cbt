@@ -1,30 +1,31 @@
-const CACHE_NAME = "marvinjamb-cbt-v1";
+const CACHE_NAME = "jamb-cbt-v1";
 
 const urlsToCache = [
   "/",
   "/index.html",
-  "/icon.png"
+  "/style.css",
+  "/app.js",
+  "/icon.png",
+  "/manifest.json"
 ];
 
-// Install → cache files
-self.addEventListener("install", (event) => {
+// Install - cache files
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("Caching files...");
+    caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache);
     })
   );
 });
 
-// Activate → clean old cache
-self.addEventListener("activate", (event) => {
+// Activate
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(names => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log("Deleting old cache:", cache);
-            return caches.delete(cache);
+        names.map(name => {
+          if (name !== CACHE_NAME) {
+            return caches.delete(name);
           }
         })
       );
@@ -32,10 +33,10 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch → serve from cache if offline
-self.addEventListener("fetch", (event) => {
+// Fetch - serve cached files
+self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
+    caches.match(event.request).then(response => {
       return response || fetch(event.request);
     })
   );

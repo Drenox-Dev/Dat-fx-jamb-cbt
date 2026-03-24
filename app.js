@@ -690,10 +690,7 @@ shuffledQuestions.forEach(q => questions.push(q));
         } else {
             init();
         }
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(() => console.log('Service Worker Registered'));
-}
+
 // OPEN & CLOSE
 const calculatorBtn = document.getElementById("calculatorBtn");
 const calculatorModal = document.getElementById("calculatorModal");
@@ -747,3 +744,6 @@ document.querySelectorAll('.subject-box').forEach(box => {
         }
     });
 });
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+}
