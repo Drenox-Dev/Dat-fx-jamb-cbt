@@ -427,6 +427,7 @@ const subjectSelect = document.querySelector('.subject-select');
         function finishExam() {
     examSubmitted = true;
     clearInterval(timerInterval);
+    
 
     document.getElementById('questionContainer').style.display = 'none';
     document.getElementById('questionGrid').classList.remove('active');
@@ -450,6 +451,13 @@ const subjectSelect = document.querySelector('.subject-select');
 
     const total = questions.length;
     const percentage = Math.round((correct / total) * 100);
+    const scoreCircle = document.getElementById("scoreCircle");
+
+// convert percentage to degrees (360° circle)
+const degrees = (percentage / 100) * 360;
+
+// update the circle
+scoreCircle.style.setProperty("--score-deg", `${degrees}deg`);
 
     document.getElementById('correctCount').textContent = correct;
     document.getElementById('wrongCount').textContent = wrong;

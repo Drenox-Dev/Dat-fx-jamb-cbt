@@ -732,7 +732,9 @@
     opacity: 0.7;
     margin-top: 5px;
 }
-
+.score-circle {
+    transition: background 1s ease;
+}
 .contact {
     margin-top: 8px;
     font-size: 14px;
