@@ -310,7 +310,7 @@ const subjectSelect = document.querySelector('.subject-select');
 
 {section: "🎓Subject: Chemistry", question: "Which of these is a common laboratory indicator?", options: ["Litmus", "Sulphur", "Sodium", "Hydrogen"], correct: 0},
 
-{section: "🎓Su    function startExam() {bject: Chemistry", question: "In a chemical reaction, the reactants are ___", options: ["Substances formed", "Substances used", "Catalysts", "Products"], correct: 1},
+{section: "🎓Subject: Chemistry", question: "In a chemical reaction, the reactants are ___", options: ["Substances formed", "Substances used", "Catalysts", "Products"], correct: 1},
 
 {section: "🎓Subject: Chemistry", question: "Which law states that volume and temperature of a gas are directly proportional?", options: ["Boyle’s Law", "Charles’ Law", "Avogadro’s Law", "Gay-Lussac’s Law"], correct: 1},
 
@@ -424,7 +424,67 @@ const subjectSelect = document.querySelector('.subject-select');
                 grid.appendChild(item);
             });
         }
+        function finishExam() {
+    examSubmitted = true;
+    clearInterval(timerInterval);
 
+    document.getElementById('questionContainer').style.display = 'none';
+    document.getElementById('questionGrid').classList.remove('active');
+    document.getElementById('header').classList.remove('active');
+
+    document.getElementById('resultsScreen').style.display = 'block';
+
+    let correct = 0;
+    let wrong = 0;
+    let unanswered = 0;
+
+    questions.forEach((q, index) => {
+        if (userAnswers[index] === null) {
+            unanswered++;
+        } else if (userAnswers[index] === q.correct) {
+            correct++;
+        } else {
+            wrong++;
+        }
+    });
+
+    const total = questions.length;
+    const percentage = Math.round((correct / total) * 100);
+
+    document.getElementById('correctCount').textContent = correct;
+    document.getElementById('wrongCount').textContent = wrong;
+    document.getElementById('unansweredCount').textContent = unanswered;
+    document.getElementById('scorePercentage').textContent = percentage + '%';
+
+    generateReview();
+}
+function submitExam() {
+    if (examSubmitted) return;
+
+    const unanswered = userAnswers.filter(a => a === null).length;
+
+    const modal = document.getElementById("submitModal");
+    const text2 = document.getElementById("submitText2");
+
+    // 🔥 DEBUG CHECK
+    if (!text2) {
+        console.error("submitText2 not found in HTML");
+        return;
+    }
+
+    text2.textContent = `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`;
+
+    modal.classList.remove("hidden");
+
+    document.getElementById("cancelBtn").onclick = () => {
+        modal.classList.add("hidden");
+    };
+
+    document.getElementById("confirmBtn").onclick = () => {
+        modal.classList.add("hidden");
+        finishExam();
+    };
+}
         function renderQuestions() {
             const container = document.getElementById('questionContainer');
             container.innerHTML = '';
@@ -594,28 +654,7 @@ shuffledQuestions.forEach(q => questions.push(q));
             document.getElementById('progressFill').style.width = `${progress}%`;
         }
 
-       function submitExam() {
-    if (examSubmitted) return;
-
-    const unanswered = userAnswers.filter(a => a === null).length;
-
-    const modal = document.getElementById("submitModal");
-    const text = document.getElementById("submitText");
-
-    text.textContent = `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`;
-
-    modal.classList.remove("hidden");
-
-    document.getElementById("cancelBtn").onclick = () => {
-        modal.classList.add("hidden");
-    };
-
-    document.getElementById("confirmBtn").onclick = () => {
-        modal.classList.add("hidden");
-        finishExam(); // we move real logic here
-    };
-}
-
+       
         function generateReview() {
             const reviewList = document.getElementById('reviewList');
             reviewList.innerHTML = '';
