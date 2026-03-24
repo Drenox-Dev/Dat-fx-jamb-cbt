@@ -458,33 +458,6 @@ const subjectSelect = document.querySelector('.subject-select');
 
     generateReview();
 }
-function submitExam() {
-    if (examSubmitted) return;
-
-    const unanswered = userAnswers.filter(a => a === null).length;
-
-    const modal = document.getElementById("submitModal");
-    const text2 = document.getElementById("submitText2");
-
-    // 🔥 DEBUG CHECK
-    if (!text2) {
-        console.error("submitText2 not found in HTML");
-        return;
-    }
-
-    text2.textContent = `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`;
-
-    modal.classList.remove("hidden");
-
-    document.getElementById("cancelBtn").onclick = () => {
-        modal.classList.add("hidden");
-    };
-
-    document.getElementById("confirmBtn").onclick = () => {
-        modal.classList.add("hidden");
-        finishExam();
-    };
-}
         function renderQuestions() {
             const container = document.getElementById('questionContainer');
             container.innerHTML = '';
@@ -654,7 +627,28 @@ shuffledQuestions.forEach(q => questions.push(q));
             document.getElementById('progressFill').style.width = `${progress}%`;
         }
 
-       
+       function submitExam() {
+    if (examSubmitted) return;
+
+    const unanswered = userAnswers.filter(a => a === null).length;
+
+    const modal = document.getElementById("submitModal");
+    const text2 = document.getElementById("submitText2");
+
+    text2.textContent = `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`;
+
+    modal.classList.remove("hidden");
+
+    document.getElementById("cancelBtn").onclick = () => {
+        modal.classList.add("hidden");
+    };
+
+    document.getElementById("confirmBtn").onclick = () => {
+        modal.classList.add("hidden");
+        finishExam(); // we move real logic here
+    };
+}
+
         function generateReview() {
             const reviewList = document.getElementById('reviewList');
             reviewList.innerHTML = '';
